@@ -14,21 +14,30 @@ const server = http.createServer();
 
 // 2nd way
 
-const rstream = fs.createReadStream("hello.txt");
+// server.on("request", (req, res) => {
 
+//     const rstream = fs.createReadStream("hello.txt");
+
+//     rstream.on("data", (chunkdata) => {
+//         res.write(chunkdata);
+//     });
+//     rstream.on("end", () => {
+//         res.end();
+//     });
+//     rstream.on("error", (err) => {
+//         console.log(err);
+//         res.end("file Not Found");
+//     });
+// });
+
+
+// 3rd way
 server.on("request", (req, res) => {
 
     const rstream = fs.createReadStream("hello.txt");
-
-    rstream.on("data", (chunkdata) => {
-        res.write(chunkdata);
-    });
-    rstream.on("end", () => {
-        res.end();
-    });
-    rstream.on("error", (err) => {
-        console.log(err);
-        res.end("file Not Found");
-    });
+    rstream.pipe(res);
 });
+
+
+
 server.listen(8000, "127.0.0.1");
